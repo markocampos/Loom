@@ -37,22 +37,23 @@ jobs:
 
       - name: Generate signing keystore
         run: |
-          keytool -genkey -v \
+          keytool -genkeypair -v \
             -keystore android/app/loom-release.keystore \
+            -storetype PKCS12 \
             -alias loom \
             -keyalg RSA \
             -keysize 2048 \
             -validity 10000 \
-            -storepass loomstorepass \
-            -keypass loomkeypass \
+            -storepass loom1234 \
+            -keypass loom1234 \
             -dname "CN=Loom, OU=Dev, O=Loom, L=Unknown, ST=Unknown, C=US"
 
       - name: Build Release APK
         env:
           KEYSTORE_PATH: loom-release.keystore
-          KEYSTORE_PASSWORD: loomstorepass
+          KEYSTORE_PASSWORD: loom1234
           KEY_ALIAS: loom
-          KEY_PASSWORD: loomkeypass
+          KEY_PASSWORD: loom1234
         run: cd android && ./gradlew assembleRelease
 
       - name: Verify APK exists
