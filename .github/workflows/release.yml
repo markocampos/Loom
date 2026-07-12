@@ -30,8 +30,23 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Build
+      - name: Build web app
         run: npm run build
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Build APK
+        run: cd android && ./gradlew assembleDebug
 
       - name: Get version from tag
         id: version
@@ -48,7 +63,7 @@ jobs:
             <!-- Add release notes here -->
 
             ### Installation
-            - **Web**: Visit [GitHub Pages](https://username.github.io/loom/)
+            - **Web**: Visit [GitHub Pages](https://markocampos.github.io/Loom/)
             - **Android**: Download the APK from Assets below
 
             ### Assets
@@ -56,4 +71,4 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            dist/**
+            android/app/build/outputs/apk/debug/app-debug.apk
