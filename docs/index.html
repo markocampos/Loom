@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loom — Personal Analytics OS</title>
   <meta name="description" content="Track your key metrics and discover hidden correlations with smart visualizations. Mood, sleep, coffee, steps, screen time — woven into insight.">
+  <meta name="theme-color" content="#6366F1">
   <link rel="icon" type="image/png" href="loom.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,12 +17,21 @@
       --primary: #6366F1;
       --primary-dark: #4F46E5;
       --primary-light: #818CF8;
-      --bg: #F8FAFC;
+      --primary-subtle: #EEF2FF;
+      --bg: #FAFBFC;
       --text: #0F172A;
       --text-muted: #64748B;
+      --text-light: #94A3B8;
       --border: #E2E8F0;
       --card: #FFFFFF;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #F43F5E;
+      --cyan: #06B6D4;
+      --violet: #8B5CF6;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -29,6 +39,103 @@
       color: var(--text);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250, 251, 252, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .nav.scrolled {
+      background: rgba(250, 251, 252, 0.95);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-logo img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .nav-logo span {
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--primary); }
+
+    .nav-cta {
+      background: var(--primary);
+      color: white !important;
+      padding: 0.625rem 1.25rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .nav-cta:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .nav-mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .nav-mobile-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      margin: 5px 0;
+      transition: all 0.3s ease;
     }
 
     /* Hero */
@@ -39,7 +146,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 2rem;
+      padding: 8rem 2rem 4rem;
       position: relative;
       overflow: hidden;
     }
@@ -47,50 +154,104 @@
     .hero::before {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(ellipse at 30% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-                  radial-gradient(ellipse at 70% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+      top: -30%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background:
+        radial-gradient(ellipse at 25% 25%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 75%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 60%);
       z-index: -1;
+      animation: gradientShift 15s ease-in-out infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-2%, -2%) scale(1.02); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--primary-subtle);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 2rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--primary);
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.6s ease;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.2); }
     }
 
     .logo {
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
       margin-bottom: 2rem;
-      animation: float 3s ease-in-out infinite;
+      animation: float 4s ease-in-out infinite, fadeIn 0.8s ease;
     }
 
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .hero h1 {
-      font-size: clamp(3rem, 8vw, 5rem);
+      font-size: clamp(3.5rem, 10vw, 6rem);
       font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--text) 0%, var(--primary) 100%);
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.6s ease 0.1s both;
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--violet) 50%, var(--cyan) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
     .hero .tagline {
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
       color: var(--primary);
       font-weight: 600;
       margin-bottom: 1rem;
+      animation: fadeInUp 0.6s ease 0.2s both;
     }
 
     .hero .subtitle {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       color: var(--text-muted);
-      max-width: 500px;
-      margin-bottom: 2.5rem;
+      max-width: 560px;
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.6s ease 0.3s both;
     }
 
     .cta-group {
@@ -98,6 +259,7 @@
       gap: 1rem;
       flex-wrap: wrap;
       justify-content: center;
+      animation: fadeInUp 0.6s ease 0.4s both;
     }
 
     .btn {
@@ -109,7 +271,7 @@
       font-size: 1rem;
       font-weight: 600;
       text-decoration: none;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
       cursor: pointer;
       border: none;
     }
@@ -117,12 +279,12 @@
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
-      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 8px 30px rgba(99, 102, 241, 0.45);
     }
 
     .btn-secondary {
@@ -134,69 +296,12 @@
     .btn-secondary:hover {
       border-color: var(--primary);
       color: var(--primary);
+      transform: translateY(-2px);
     }
 
-    /* Features */
-    .features {
-      padding: 6rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .features h2 {
-      text-align: center;
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .features .section-subtitle {
-      text-align: center;
-      color: var(--text-muted);
-      margin-bottom: 4rem;
-      font-size: 1.1rem;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-
-    .feature-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 1.5rem;
-      padding: 2rem;
-      transition: all 0.3s ease;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-      border-color: var(--primary-light);
-    }
-
-    .feature-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .feature-card h3 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .feature-card p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
+    .btn svg {
+      width: 20px;
+      height: 20px;
     }
 
     /* Metrics */
@@ -204,7 +309,7 @@
       background: var(--card);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding: 6rem 2rem;
+      padding: 5rem 2rem;
     }
 
     .metrics-inner {
@@ -214,9 +319,16 @@
     }
 
     .metrics h2 {
-      font-size: 2.5rem;
+      font-size: 2.25rem;
       font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .metrics .section-desc {
+      color: var(--text-muted);
       margin-bottom: 3rem;
+      font-size: 1.05rem;
     }
 
     .metric-pills {
@@ -234,12 +346,112 @@
       background: var(--bg);
       border-radius: 1rem;
       font-weight: 500;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .metric-pill:hover {
+      border-color: var(--border);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
     .metric-dot {
       width: 12px;
       height: 12px;
       border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Features */
+    .features {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+      border-color: var(--primary-light);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
     }
 
     /* How it works */
@@ -249,23 +461,30 @@
       margin: 0 auto;
     }
 
-    .how-it-works h2 {
-      text-align: center;
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 4rem;
-    }
-
     .steps {
       display: flex;
       flex-direction: column;
-      gap: 3rem;
+      gap: 0;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      left: 23px;
+      top: 48px;
+      bottom: 48px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--primary), var(--violet));
+      opacity: 0.3;
     }
 
     .step {
       display: flex;
       gap: 2rem;
       align-items: flex-start;
+      padding: 2rem 0;
+      position: relative;
     }
 
     .step-number {
@@ -280,6 +499,13 @@
       font-weight: 700;
       font-size: 1.2rem;
       flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .step-content {
+      padding-top: 0.5rem;
     }
 
     .step-content h3 {
@@ -290,19 +516,49 @@
 
     .step-content p {
       color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Stats */
+    .stats {
+      padding: 5rem 2rem;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+    }
+
+    .stats-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat-item h3 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-item p {
+      font-size: 0.95rem;
+      opacity: 0.85;
     }
 
     /* CTA */
     .cta-section {
       padding: 6rem 2rem;
       text-align: center;
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+      background: var(--card);
+      border-top: 1px solid var(--border);
     }
 
     .cta-section h2 {
       font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 1rem;
+      letter-spacing: -0.02em;
     }
 
     .cta-section p {
@@ -323,33 +579,112 @@
     footer a {
       color: var(--primary);
       text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     /* Responsive */
-    @media (max-width: 640px) {
-      .step { flex-direction: column; gap: 1rem; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: block; }
+
+      .nav-links.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--card);
+        padding: 1rem 2rem 2rem;
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
       .feature-grid { grid-template-columns: 1fr; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 2rem 1rem; }
+      .step { flex-direction: column; gap: 1rem; }
+      .steps::before { display: none; }
+      .footer-links { flex-wrap: wrap; gap: 1rem; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 6rem 1.5rem 3rem; }
+      .stats-inner { grid-template-columns: 1fr; }
+      .metric-pills { gap: 0.75rem; }
+      .metric-pill { padding: 0.75rem 1rem; font-size: 0.9rem; }
+    }
+
+    /* Scroll animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <img src="loom.png" alt="Loom">
+        <span>Loom</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#metrics">Metrics</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#download" class="nav-cta">Get Started</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
   <!-- Hero -->
   <section class="hero">
+    <div class="hero-badge">Now available on Android & Web</div>
     <img src="loom.png" alt="Loom" class="logo">
-    <h1>Loom</h1>
+    <h1><span class="gradient-text">Loom</span></h1>
     <p class="tagline">Weave your data into insight</p>
-    <p class="subtitle">A personal analytics OS that tracks your key metrics and discovers hidden correlations with smart visualizations.</p>
+    <p class="subtitle">A personal analytics OS that tracks your key metrics and discovers hidden correlations with smart visualizations. Your data stays on your device.</p>
     <div class="cta-group">
-      <a href="#download" class="btn btn-primary">Get Started</a>
-      <a href="https://github.com/user/loom" class="btn btn-secondary">View on GitHub</a>
+      <a href="#download" class="btn btn-primary">
+        Get Started Free
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="https://github.com/user/loom" class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        View on GitHub
+      </a>
     </div>
   </section>
 
   <!-- Metrics -->
   <section class="metrics" id="metrics">
     <div class="metrics-inner">
-      <h2>Track What Matters</h2>
-      <div class="metric-pills">
+      <h2 class="reveal">Track What Matters</h2>
+      <p class="section-desc reveal">Built-in metrics for the things that shape your day.</p>
+      <div class="metric-pills reveal">
         <div class="metric-pill">
           <div class="metric-dot" style="background: #6366F1;"></div>
           Mood
@@ -379,48 +714,50 @@
   </section>
 
   <!-- Features -->
-  <section class="features">
-    <h2>Everything You Need</h2>
-    <p class="section-subtitle">Built for people who want to understand themselves better.</p>
+  <section class="features" id="features">
+    <div class="section-header">
+      <h2 class="reveal">Everything You Need</h2>
+      <p class="reveal">Built for people who want to understand themselves better.</p>
+    </div>
     <div class="feature-grid">
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(99, 102, 241, 0.1);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
         <h3>Smart Insights</h3>
         <p>Discover hidden correlations between your habits with Pearson correlation analysis and anomaly detection.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(16, 185, 129, 0.1);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
         </div>
         <h3>Trend Analysis</h3>
         <p>See how your metrics change over time with moving averages and week-over-week comparisons.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(245, 158, 11, 0.1);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         </div>
         <h3>Streak Tracking</h3>
         <p>Build consistency with daily streaks and get reminded to log your metrics.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(244, 63, 94, 0.1);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F43F5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F43F5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
         <h3>Daily Notes</h3>
         <p>Add context to your data with daily notes and journal entries.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(139, 92, 246, 0.1);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
         <h3>Private & Secure</h3>
         <p>All data stays on your device. No accounts, no cloud, no tracking.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(6, 182, 212, 0.1);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </div>
         <h3>Backup & Export</h3>
         <p>Export your data as CSV or create full backups. Your data, your control.</p>
@@ -428,29 +765,54 @@
     </div>
   </section>
 
+  <!-- Stats -->
+  <section class="stats">
+    <div class="stats-inner">
+      <div class="stat-item reveal">
+        <h3>30s</h3>
+        <p>Daily logging time</p>
+      </div>
+      <div class="stat-item reveal">
+        <h3>7+</h3>
+        <p>Built-in metrics</p>
+      </div>
+      <div class="stat-item reveal">
+        <h3>0</h3>
+        <p>Accounts required</p>
+      </div>
+      <div class="stat-item reveal">
+        <h3>100%</h3>
+        <p>Private by default</p>
+      </div>
+    </div>
+  </section>
+
   <!-- How it works -->
-  <section class="how-it-works">
-    <h2>How It Works</h2>
+  <section class="how-it-works" id="how-it-works">
+    <div class="section-header">
+      <h2 class="reveal">How It Works</h2>
+      <p class="reveal">Three simple steps to better self-understanding.</p>
+    </div>
     <div class="steps">
-      <div class="step">
+      <div class="step reveal">
         <div class="step-number">1</div>
         <div class="step-content">
           <h3>Choose Your Metrics</h3>
-          <p>Pick from built-in metrics (mood, sleep, coffee, steps, screen time) or create your own custom ones.</p>
+          <p>Pick from built-in metrics (mood, sleep, coffee, steps, screen time) or create your own custom ones. Tailor Loom to what matters to you.</p>
         </div>
       </div>
-      <div class="step">
+      <div class="step reveal">
         <div class="step-number">2</div>
         <div class="step-content">
           <h3>Log Daily</h3>
-          <p>Spend 30 seconds each day logging your metrics. Add notes for context. Build your streak.</p>
+          <p>Spend 30 seconds each day logging your metrics. Add notes for context. Build your streak and watch the data accumulate.</p>
         </div>
       </div>
-      <div class="step">
+      <div class="step reveal">
         <div class="step-number">3</div>
         <div class="step-content">
           <h3>Discover Patterns</h3>
-          <p>After 7+ days, Loom reveals correlations, trends, and anomalies in your data.</p>
+          <p>After 7+ days, Loom reveals correlations, trends, and anomalies in your data. See how your habits connect.</p>
         </div>
       </div>
     </div>
@@ -458,17 +820,66 @@
 
   <!-- CTA -->
   <section class="cta-section" id="download">
-    <h2>Start Weaving Your Data</h2>
-    <p>Available as a web app and Android app.</p>
-    <div class="cta-group">
-      <a href="../index.html" class="btn btn-primary">Launch App</a>
+    <h2 class="reveal">Start Weaving Your Data</h2>
+    <p class="reveal">Available as a web app and Android app. Free and open source.</p>
+    <div class="cta-group reveal">
+      <a href="../index.html" class="btn btn-primary">
+        Launch App
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
       <a href="https://github.com/user/loom" class="btn btn-secondary">View Source</a>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
+    <div class="footer-links">
+      <a href="#metrics">Metrics</a>
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="https://github.com/user/loom">GitHub</a>
+    </div>
     <p>Loom v1.0.0 — Built with care. Your data stays yours.</p>
   </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    mobileToggle?.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Close mobile menu on link click
+    navLinks?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // Navbar scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Scroll reveal animation
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  </script>
 </body>
 </html>
