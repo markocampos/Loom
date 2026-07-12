@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { ChevronLeft, ChevronRight, Calendar } from 'lucide-vue-next'
+import { ChevronLeft, ChevronRight, Calendar } from '@lucide/vue'
 import { useMetricsStore } from '../stores/metrics'
 import { useSettingsStore } from '../stores/settings'
 import { getAllMetrics } from '../data/defaultMetrics'

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { Plus, Flame, ArrowRight, Sparkles } from 'lucide-vue-next'
+import { Plus, Flame, ArrowRight, Sparkles } from '@lucide/vue'
 import { useMetricsStore } from '../stores/metrics'
 import { useSettingsStore } from '../stores/settings'
 import { getAllMetrics } from '../data/defaultMetrics'

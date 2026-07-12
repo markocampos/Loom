@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { Sparkles, TrendingUp, TrendingDown, Minus, BarChart3 } from 'lucide-vue-next'
+import { Sparkles, TrendingUp, TrendingDown, Minus, BarChart3 } from '@lucide/vue'
 import { useMetricsStore } from '../stores/metrics'
 import { useSettingsStore } from '../stores/settings'
 import { useInsights } from '../composables/useInsights'

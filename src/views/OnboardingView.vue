@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import {
   ArrowRight, ArrowLeft, Check, Smile, Moon, Coffee,
   Footprints, Monitor, Sparkles, Target, PartyPopper
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 import { useSettingsStore } from '../stores/settings'
 import { defaultMetrics } from '../data/defaultMetrics'
 

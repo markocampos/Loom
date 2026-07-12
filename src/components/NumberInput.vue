@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { Coffee, Footprints, Monitor, Minus, Plus } from 'lucide-vue-next'
+import { Coffee, Footprints, Monitor, Minus, Plus } from '@lucide/vue'
 
 const iconMap = { Coffee, Footprints, Monitor }
 

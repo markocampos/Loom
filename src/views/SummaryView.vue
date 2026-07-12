@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import {
   Minus, BarChart3,
   Trophy, AlertTriangle, ArrowUpRight, ArrowDownRight, Flame
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 import { useMetricsStore } from '../stores/metrics'
 import { useSettingsStore } from '../stores/settings'
 import { getAllMetrics } from '../data/defaultMetrics'

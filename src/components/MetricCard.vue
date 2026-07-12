@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { Smile, Moon, Coffee, Footprints, Monitor } from 'lucide-vue-next'
+import { Smile, Moon, Coffee, Footprints, Monitor } from '@lucide/vue'
 import { formatMetricValue } from '../utils/formatters'
 
 const iconMap = { Smile, Moon, Coffee, Footprints, Monitor }

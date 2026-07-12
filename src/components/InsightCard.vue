@@ -1,5 +1,5 @@
 <script setup>
-import { Sparkles } from 'lucide-vue-next'
+import { Sparkles } from '@lucide/vue'
 
 defineProps({
   text: { type: String, required: true },

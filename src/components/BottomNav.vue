@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Home, TrendingUp, BarChart3, History, Settings } from 'lucide-vue-next'
+import { Home, TrendingUp, BarChart3, History, Settings } from '@lucide/vue'
 
 const route = useRoute()
 const router = useRouter()

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { ArrowLeft, Check, Download, Loader2 } from 'lucide-vue-next'
+import { ArrowLeft, Check, Download, Loader2 } from '@lucide/vue'
 import { useMetricsStore } from '../stores/metrics'
 import { useSettingsStore } from '../stores/settings'
 import { useHealthData } from '../composables/useHealthData'

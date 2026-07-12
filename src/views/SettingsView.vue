@@ -3,7 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import {
   Download, Upload, Sparkles, Target, Trash2, AlertTriangle,
   CheckCircle, Plus, Bell, MessageSquare
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 import { useSettingsStore } from '../stores/settings'
 import { useMetricsStore } from '../stores/metrics'
 import { useDatabase } from '../composables/useDatabase'
