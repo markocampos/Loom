@@ -35,11 +35,23 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Build APK
-        run: cd android && ./gradlew assembleDebug
+      - name: Build Release APK
+        run: cd android && ./gradlew assembleRelease
+
+      - name: Verify APK exists
+        run: |
+          APK_PATH="android/app/build/outputs/apk/release/app-release.apk"
+          if [ ! -f "$APK_PATH" ]; then
+            echo "ERROR: APK not found at $APK_PATH"
+            echo "Available files in build outputs:"
+            find android/app/build/outputs -type f -name "*.apk" 2>/dev/null || echo "No APK files found"
+            exit 1
+          fi
+          echo "APK found at $APK_PATH"
+          ls -lh "$APK_PATH"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: loom-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: loom-release-apk
+          path: android/app/build/outputs/apk/release/app-release.apk

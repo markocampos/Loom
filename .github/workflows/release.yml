@@ -15,8 +15,8 @@ permissions:
   contents: write
 
 jobs:
-  release:
-    name: Create Release
+  build:
+    name: Build APK
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -62,19 +62,54 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Build APK
-        run: cd android && ./gradlew assembleDebug
+      - name: Build Release APK
+        run: cd android && ./gradlew assembleRelease
+
+      - name: Verify APK exists
+        run: |
+          APK_PATH="android/app/build/outputs/apk/release/app-release.apk"
+          if [ ! -f "$APK_PATH" ]; then
+            echo "ERROR: APK not found at $APK_PATH"
+            echo "Available files in build outputs:"
+            find android/app/build/outputs -type f -name "*.apk" 2>/dev/null || echo "No APK files found"
+            exit 1
+          fi
+          echo "APK found at $APK_PATH"
+          ls -lh "$APK_PATH"
 
       - name: Rename APK
-        run: mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/loom-v${{ steps.version.outputs.VERSION }}.apk
+        run: |
+          APK_DIR="android/app/build/outputs/apk/release"
+          mv "$APK_DIR/app-release.apk" "$APK_DIR/loom-v${{ steps.version.outputs.VERSION }}.apk"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: loom-release-apk
+          path: android/app/build/outputs/apk/release/loom-v${{ steps.version.outputs.VERSION }}.apk
+          retention-days: 30
+
+    outputs:
+      version: ${{ steps.version.outputs.VERSION }}
+      tag: ${{ steps.version.outputs.TAG }}
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: loom-release-apk
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Loom v${{ steps.version.outputs.VERSION }}
-          tag_name: ${{ steps.version.outputs.TAG }}
+          name: Loom v${{ needs.build.outputs.version }}
+          tag_name: ${{ needs.build.outputs.tag }}
           body: |
-            ## Loom v${{ steps.version.outputs.VERSION }}
+            ## Loom v${{ needs.build.outputs.version }}
 
             ### What's New
             <!-- Add release notes here -->
@@ -84,8 +119,8 @@ jobs:
             - **Android**: Download the APK from Assets below
 
             ### Assets
-            - `loom-v${{ steps.version.outputs.VERSION }}.apk` - Android app
+            - `loom-v${{ needs.build.outputs.version }}.apk` - Android app
           draft: false
           prerelease: false
           files: |
-            android/app/build/outputs/apk/debug/loom-v${{ steps.version.outputs.VERSION }}.apk
+            loom-v${{ needs.build.outputs.version }}.apk
