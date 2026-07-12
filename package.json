@@ -15,9 +15,9 @@
     }
   },
   "dependencies": {
-    "@capacitor/android": "^7.6.0",
-    "@capacitor/cli": "^7.6.0",
-    "@capacitor/core": "^7.6.0",
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
     "capacitor-health-connect": "^0.7.0",
     "echarts": "^5.5.1",
     "lucide-vue-next": "^0.469.0",
