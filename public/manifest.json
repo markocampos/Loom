@@ -1,0 +1,17 @@
+{
+  "name": "Loom",
+  "short_name": "Loom",
+  "description": "Weave your data into insight",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#6366F1",
+  "icons": [
+    {
+      "src": "/loom.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

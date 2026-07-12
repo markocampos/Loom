@@ -1,0 +1,48 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for console.log statements
+        run: |
+          if grep -rn "console\.\(log\|debug\)" src/ --include="*.vue" --include="*.js" | grep -v "__tests__"; then
+            echo "⚠️ Found console.log/debug statements"
+            exit 1
+          fi
+
+      - name: Check for TODO/FIXME comments
+        run: |
+          if grep -rn "TODO\|FIXME\|HACK\|XXX" src/ --include="*.vue" --include="*.js" | grep -v "__tests__"; then
+            echo "⚠️ Found TODO/FIXME comments"
+            exit 1
+          fi
+
+      - name: Check for hardcoded URLs
+        run: |
+          if grep -rn "localhost\|127\.0\.0\.1" src/ --include="*.vue" --include="*.js" | grep -v "__tests__"; then
+            echo "⚠️ Found hardcoded localhost URLs"
+            exit 1
+          fi
+
+      - name: Verify build succeeds
+        run: npm run build
